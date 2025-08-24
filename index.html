@@ -1,58 +1,253 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSTHA STUDIO DE SOFTWARES</title>
+    <title>Costha Studio de Softwares - Transformando sua ideia em realidade</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
-        /* Estilos gerais para o corpo da página */
         body {
-            font-family: sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* Faz o corpo ocupar a altura total da tela */
+            font-family: 'Inter', sans-serif;
+            background-color: #0a192f; /* Azul marinho escuro */
+            color: #ccd6f6; /* Cor de texto clara */
         }
-
-        /* Estilos para o cabeçalho */
-        header {
-            margin-bottom: 50px;
+        .glass-effect {
+            background: rgba(23, 44, 77, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        h1 {
-            font-size: 2.5em; /* Tamanho do título principal */
-            margin-bottom: 10px;
-            color: #333;
+        /* Cores da sua logo */
+        .accent-color {
+            color: #8BC34A; /* Verde da logo */
         }
-
-        p {
-            font-size: 1.2em; /* Tamanho do subtítulo */
-            color: #666;
+        .bg-accent {
+            background-color: #8BC34A;
         }
-
-        /* Estilos para a seção principal com o aviso */
-        main h2 {
-            font-size: 6em; /* Tamanho bem grande para "EM CRIAÇÃO" */
-            color: #cc0000; /* Cor vermelha para dar destaque */
-            font-weight: bold;
-            text-transform: uppercase; /* Deixa o texto em maiúsculas */
+        .border-accent {
+            border-color: #8BC34A;
+        }
+        .secondary-color {
+            color: #00a9e0; /* Azul da logo */
+        }
+        .btn-primary {
+            @apply bg-transparent border-2 border-accent text-accent font-semibold py-3 px-6 rounded-lg transition-all duration-300 ease-in-out;
+        }
+        .btn-primary:hover {
+            @apply bg-accent bg-opacity-20;
+        }
+        .section-title {
+            @apply text-3xl md:text-4xl font-bold mb-12 text-center relative;
+        }
+        .section-title::after {
+            content: '';
+            @apply w-24 h-1 bg-accent absolute -bottom-4 left-1/2 -translate-x-1/2 rounded-full;
         }
     </style>
 </head>
-<body>
+<body class="antialiased">
 
-    <header>
-        <h1>COSTHA STUDIO DE SOFTWARES</h1>
-        <p>Transformando sua idéia em realidade.</p>
+    <!-- Header -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass-effect">
+        <div class="container mx-auto px-6 py-2 flex justify-between items-center">
+            <a href="#" class="flex-shrink-0">
+                <!-- SUA LOGO AQUI -->
+                <!-- Substitua o 'src' pela URL da sua imagem -->
+                <img src="https://i.imgur.com/8a3O0dM.png" alt="Logo Costha Studio de Softwares" class="h-12 md:h-14">
+            </a>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#sobre" class="hover:accent-color transition-colors duration-300">Sobre</a>
+                <a href="#projetos" class="hover:accent-color transition-colors duration-300">Projetos</a>
+                <a href="#contato" class="hover:accent-color transition-colors duration-300">Contato</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden text-white">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#sobre" class="block py-2 px-6 text-sm hover:bg-slate-700">Sobre</a>
+            <a href="#projetos" class="block py-2 px-6 text-sm hover:bg-slate-700">Projetos</a>
+            <a href="#contato" class="block py-2 px-6 text-sm hover:bg-slate-700">Contato</a>
+        </div>
     </header>
 
     <main>
-        <h2>EM CRIAÇÃO</h2>
+        <!-- Hero Section -->
+        <section id="hero" class="min-h-screen flex items-center bg-cover bg-center" style="background-image: url('https://placehold.co/1920x1080/0a192f/172c4d?text=');">
+            <div class="container mx-auto px-6 text-center">
+                <div class="bg-black bg-opacity-30 p-10 rounded-xl">
+                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-4">
+                        Costha <span class="secondary-color">Studio</span> de Softwares
+                    </h1>
+                    <p class="text-xl md:text-2xl accent-color font-semibold mb-8">
+                        Transformando sua ideia em realidade.
+                    </p>
+                    <a href="#contato" class="btn-primary text-lg">
+                        Vamos Conversar
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sobre Nós Section -->
+        <section id="sobre" class="py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title">Sobre Nós</h2>
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/2">
+                        <img src="https://placehold.co/600x400/172c4d/8BC34A?text=Inova%C3%A7%C3%A3o" alt="Equipe Costha Studio" class="rounded-lg shadow-2xl w-full">
+                    </div>
+                    <div class="md:w-1/2 text-lg text-slate-300">
+                        <p class="mb-4">
+                            Na <span class="text-white font-semibold">Costha Studio de Softwares</span>, somos apaixonados por tecnologia e inovação. Nossa missão é pegar sua visão e transformá-la em soluções digitais robustas, intuitivas e eficientes. 
+                        </p>
+                        <p class="mb-4">
+                            Com expertise em desenvolvimento mobile, web e PWA, criamos produtos que não apenas atendem, mas superam as expectativas. Cada linha de código é escrita com precisão, e cada design é pensado para a melhor experiência do usuário.
+                        </p>
+                        <p>
+                            Seu sucesso é o nosso combustível. Estamos prontos para construir o futuro do seu negócio, juntos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projetos Section -->
+        <section id="projetos" class="py-20 md:py-32 bg-[#112240]">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title">Nossos Projetos</h2>
+                
+                <!-- Categorias -->
+                <div class="mb-16">
+                    <h3 class="text-2xl font-bold mb-8 flex items-center gap-3"><i data-lucide="smartphone" class="accent-color"></i>Apps na Play Store</h3>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Projeto 1 -->
+                        <div class="glass-effect rounded-lg p-6 flex flex-col hover:transform hover:-translate-y-2 transition-transform duration-300">
+                            <div class="flex items-center mb-4">
+                                <img src="https://placehold.co/64x64/8BC34A/0a192f?text=G" alt="Ícone App Gestor Fácil" class="w-16 h-16 rounded-lg mr-4">
+                                <h4 class="text-xl font-bold text-white">Gestor Fácil</h4>
+                            </div>
+                            <p class="text-slate-400 flex-grow">Um aplicativo completo para gestão de pequenas empresas, com controle de estoque, vendas e fluxo de caixa.</p>
+                        </div>
+                        <!-- Projeto 2 -->
+                        <div class="glass-effect rounded-lg p-6 flex flex-col hover:transform hover:-translate-y-2 transition-transform duration-300">
+                            <div class="flex items-center mb-4">
+                                <img src="https://placehold.co/64x64/8BC34A/0a192f?text=F" alt="Ícone App Foco Total" class="w-16 h-16 rounded-lg mr-4">
+                                <h4 class="text-xl font-bold text-white">Foco Total</h4>
+                            </div>
+                            <p class="text-slate-400 flex-grow">Aumente sua produtividade com este app de gerenciamento de tempo baseado na técnica Pomodoro.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-16">
+                    <h3 class="text-2xl font-bold mb-8 flex items-center gap-3"><i data-lucide="package" class="accent-color"></i>Apps Android (Distribuição Direta)</h3>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="glass-effect rounded-lg p-6 flex flex-col hover:transform hover:-translate-y-2 transition-transform duration-300">
+                             <div class="flex items-center mb-4">
+                                <img src="https://placehold.co/64x64/8BC34A/0a192f?text=S" alt="Ícone App Sync Vendas" class="w-16 h-16 rounded-lg mr-4">
+                                <h4 class="text-xl font-bold text-white">Sync Vendas</h4>
+                            </div>
+                            <p class="text-slate-400 flex-grow">Sistema de força de vendas para representantes comerciais, com funcionamento offline e sincronização de dados.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-bold mb-8 flex items-center gap-3"><i data-lucide="globe-2" class="accent-color"></i>Web Apps (PWA)</h3>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="glass-effect rounded-lg p-6 flex flex-col hover:transform hover:-translate-y-2 transition-transform duration-300">
+                            <div class="flex items-center mb-4">
+                                <img src="https://placehold.co/64x64/8BC34A/0a192f?text=A" alt="Ícone App Agenda Web" class="w-16 h-16 rounded-lg mr-4">
+                                <h4 class="text-xl font-bold text-white">Agenda Web</h4>
+                            </div>
+                            <p class="text-slate-400 flex-grow">Sistema de agendamento online para clínicas e salões, que pode ser instalado na tela inicial como um app.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contato Section -->
+        <section id="contato" class="py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="section-title">Entre em Contato</h2>
+                <p class="max-w-3xl mx-auto text-lg mb-12 text-slate-300">
+                    Tem uma ideia incrível ou precisa de uma solução digital para o seu negócio? Adoraríamos ouvir sobre ela. Vamos construir algo grandioso juntos.
+                </p>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-8 text-lg">
+                    <a href="mailto:costha.studio_softwares@outlook.com" class="flex items-center gap-3 hover:accent-color transition-colors duration-300">
+                        <i data-lucide="mail"></i>
+                        <span>costha.studio_softwares@outlook.com</span>
+                    </a>
+                    <a href="https://www.instagram.com/costha_studio_softwares?igsh=MWx2ZW04aWs1eHUwbA==" target="_blank" class="flex items-center gap-3 hover:accent-color transition-colors duration-300">
+                        <i data-lucide="instagram"></i>
+                        <span>@costha_studio_softwares</span>
+                    </a>
+                </div>
+                 <div class="mt-12">
+                    <a href="https://wa.me/5579996365824" target="_blank" class="btn-primary text-xl">
+                        Envie sua Ideia
+                    </a>
+                </div>
+            </div>
+        </section>
     </main>
 
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/5579996365824" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-colors duration-300 z-50">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>
+    </a>
+
+    <!-- Footer -->
+    <footer class="bg-[#081428] py-8">
+        <div class="container mx-auto px-6 text-center text-slate-400">
+            <p>&copy; 2024 Costha Studio de Softwares. Todos os direitos reservados.</p>
+            <p class="text-sm mt-2">Desenvolvido com <span class="accent-color">&hearts;</span> pela Costha Studio.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Lucide Icons
+        lucide.createIcons();
+
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Change header style on scroll
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('py-1');
+                header.classList.remove('py-2');
+            } else {
+                header.classList.remove('py-1');
+                header.classList.add('py-2');
+            }
+        });
+    </script>
 </body>
 </html>
