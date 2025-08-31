@@ -16,10 +16,6 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- 
-        NOTE: Changed <style> to <style type="text/tailwindcss"> 
-        This enables the use of @apply directives with the Tailwind CDN.
-    -->
     <style type="text/tailwindcss">
         body {
             font-family: 'Inter', sans-serif;
@@ -27,12 +23,11 @@
             color: #ccd6f6; /* Cor de texto clara */
         }
         .glass-effect {
-            background: rgba(23, 44, 77, 0.6);
+            background: rgba(10, 25, 47, 0.85);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        /* Cores da sua logo */
         .accent-color {
             color: #8BC34A; /* Verde da logo */
         }
@@ -58,18 +53,45 @@
             content: '';
             @apply w-24 h-1 bg-accent absolute -bottom-4 left-1/2 -translate-x-1/2 rounded-full;
         }
+        
+        /* NOVO ESTILO DOS PROJETOS */
+        .project-card {
+            @apply bg-[#112240] bg-opacity-70 border border-slate-800 rounded-xl p-6 flex flex-col transition-all duration-300 cursor-pointer overflow-hidden relative;
+        }
+        .project-card:before {
+            content: '';
+            @apply absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-r from-transparent to-accent/30 transition-transform duration-500 ease-in-out;
+            transform: rotate(45deg) translate(-100%, -100%);
+        }
+        .project-card:hover:before {
+            transform: rotate(45deg) translate(0, 0);
+        }
+        .project-card:hover {
+            @apply transform -translate-y-2 border-accent/50 shadow-2xl shadow-accent/10;
+        }
+        
+        /* Animação de Scroll */
+        .reveal {
+            @apply opacity-0 transform translate-y-8 transition-all duration-700 ease-out;
+        }
+        .reveal.visible {
+            @apply opacity-100 translate-y-0;
+        }
+
         /* Estilos do Modal */
         .modal-overlay {
-            @apply fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 transition-opacity duration-300;
+            @apply fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 transition-opacity duration-300;
         }
         .modal-container {
-            @apply bg-[#112240] rounded-lg shadow-xl p-6 md:p-8 w-11/12 max-w-4xl max-h-[90vh] overflow-y-auto transform transition-all duration-300 scale-95;
+            @apply bg-[#0a192f] border border-slate-700 rounded-lg shadow-xl w-11/12 max-w-5xl max-h-[90vh] overflow-hidden flex flex-col;
+            transform: scale(0.95);
+            transition: all 0.3s ease-in-out;
         }
         .modal-overlay.opacity-0 {
             pointer-events: none;
         }
         .modal-overlay.opacity-100 .modal-container {
-            @apply scale-100;
+            transform: scale(1);
         }
     </style>
 </head>
@@ -81,20 +103,20 @@
             <a href="#" class="flex-shrink-0">
                 <img src="https://placehold.co/200x60/0a192f/8BC34A?text=Costha+Studio&font=inter" alt="Logo Costha Studio de Softwares" class="h-12 md:h-14">
             </a>
-            <nav class="hidden md:flex space-x-8">
-                <a href="#sobre" class="hover:accent-color transition-colors duration-300">Sobre</a>
-                <a href="#projetos" class="hover:accent-color transition-colors duration-300">Projetos</a>
-                <a href="#contato" class="hover:accent-color transition-colors duration-300">Contato</a>
+            <nav class="hidden md:flex space-x-8 text-slate-300">
+                <a href="#sobre" class="hover:text-accent transition-colors duration-300">Sobre</a>
+                <a href="#projetos" class="hover:text-accent transition-colors duration-300">Projetos</a>
+                <a href="#contato" class="hover:text-accent transition-colors duration-300">Contato</a>
             </nav>
             <button id="mobile-menu-button" class="md:hidden text-white">
                 <i data-lucide="menu"></i>
             </button>
         </div>
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden">
-            <a href="#sobre" class="block py-2 px-6 text-sm hover:bg-slate-700">Sobre</a>
-            <a href="#projetos" class="block py-2 px-6 text-sm hover:bg-slate-700">Projetos</a>
-            <a href="#contato" class="block py-2 px-6 text-sm hover:bg-slate-700">Contato</a>
+        <div id="mobile-menu" class="hidden md:hidden bg-[#0a192f] border-t border-slate-800">
+            <a href="#sobre" class="block py-3 px-6 text-sm hover:bg-slate-800 hover:text-accent">Sobre</a>
+            <a href="#projetos" class="block py-3 px-6 text-sm hover:bg-slate-800 hover:text-accent">Projetos</a>
+            <a href="#contato" class="block py-3 px-6 text-sm hover:bg-slate-800 hover:text-accent">Contato</a>
         </div>
     </header>
 
@@ -119,8 +141,8 @@
         <!-- Sobre Nós Section -->
         <section id="sobre" class="py-20 md:py-32">
             <div class="container mx-auto px-6">
-                <h2 class="section-title">Sobre Nós</h2>
-                <div class="flex flex-col md:flex-row items-center gap-12">
+                <h2 class="section-title reveal">Sobre Nós</h2>
+                <div class="flex flex-col md:flex-row items-center gap-12 reveal">
                     <div class="md:w-1/2">
                         <img src="https://placehold.co/600x400/112240/ccd6f6?text=Inovação+Digital" alt="Equipe Costha Studio" class="rounded-lg shadow-2xl w-full">
                     </div>
@@ -140,257 +162,51 @@
         </section>
 
         <!-- Projetos Section -->
-        <section id="projetos" class="py-20 md:py-32 bg-[#112240]">
+        <section id="projetos" class="py-20 md:py-32 bg-[#0a192f] overflow-x-hidden">
             <div class="container mx-auto px-6">
-                <h2 class="section-title">Nossos Projetos</h2>
+                <h2 class="section-title reveal">Nossos Projetos</h2>
                 
-                <!-- Categoria 1: Apps na Play Store -->
-                <div class="mb-16">
-                    <h3 class="text-2xl font-bold mb-8 flex items-center gap-3"><i data-lucide="smartphone" class="accent-color"></i>Apps na Play Store</h3>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        
-                        <!-- Projeto Rota Certa! -->
-                        <div class="project-card glass-effect rounded-lg p-6 flex flex-col hover:transform hover:-translate-y-2 transition-transform duration-300 cursor-pointer"
-                             data-title="Rota Certa!"
-                             data-icon="https://placehold.co/128x128/0a192f/8BC34A?text=RC"
-                             data-description="Bem-vindo ao Rota Certa, o aplicativo essencial para todo profissional autônomo que atua com entregas e transporte por plataformas digitais.
-Cansado de não saber para onde seu dinheiro vai? Quer maximizar seus lucros e ter um controle financeiro de verdade? Sua rota para o sucesso começa aqui!
-
-⭐ O que o Rota Certa oferece para VOCÊ:
-
-📊 Controle Financeiro Completo e em Tempo Real:
-
-Registro Simplificado: Anote todos os seus ganhos (de diversas plataformas de entrega e mobilidade) e gastos diários de forma rápida e intuitiva.
-
-Resumo Mensal Claro: Visualize seus ganhos totais, gastos totais e o saldo líquido do mês de forma instantânea. Saiba exatamente quanto está entrando e saindo.
-
-Saldos Inteligentes: O valor líquido é calculado em tempo real, mostrando o resultado da sua operação, com cores que indicam se você está no lucro (verde), no zero (cinza) ou no prejuízo (vermelho).
-
-Sugestão de Alocação de Ganhos Diários: Com base nos seus ganhos do dia, receba uma sugestão inteligente de como distribuir seu dinheiro para:
-Combustível: Calcule a porcentagem ideal para abastecer.
-Manutenção: Reserve para a saúde do seu veículo.
-Previdência/MEI: Pense no seu futuro e segurança.
-Férias: Comece a planejar seu descanso.
-Poupança/Investimentos: Faça seu dinheiro trabalhar para você.
-Lucro Líquido: Saiba qual o seu verdadeiro ganho para usar como quiser.
-Esta ferramenta é ideal para quem busca autonomia e quer se organizar financeiramente.
-
-💡 Guia para Iniciantes e Dicas de Otimização:
-
-Primeiros Passos: Se você está começando, tenha acesso a um guia completo com o essencial para iniciar sua jornada.
-Otimização de Rotas e Navegação: Dicas para economizar tempo e combustível.
-Segurança e Boas Práticas: Informações vitais para sua proteção e para se destacar no atendimento ao cliente.
-Maximizando Ganhos: Estratégias para identificar horários de pico, trabalhar com múltiplas plataformas e escolher as melhores corridas.
-Economia Diária: Dicas para economizar com alimentação, internet móvel e muito mais.
-Bancos Digitais: Conheça as melhores opções para gerenciar seu dinheiro sem taxas abusivas.
-
-🔧 Gerenciamento de Veículos e Revisões:
-
-Histórico Completo: Registre todas as revisões do seu veículo, incluindo quilometragem e valor gasto.
-Lembretes Personalizados: Defina lembretes para as próximas revisões, garantindo que você não perca a manutenção preventiva e evite gastos maiores.
-
-🤝 Comunidade e Apoio:
-
-Grupos de Apoio: Conecte-se com outros profissionais da área em grupos de WhatsApp e Telegram para trocar experiências e tirar dúvidas.
-Canais Oficiais: Acompanhe as dicas e novidades do desenvolvedor nas redes sociais e Linktr.ee.
-
-✨ Design Moderno e Personalizável:
-
-Interface Intuitiva: Um design limpo e fácil de usar, pensado para o seu dia a dia.
-Modo Escuro: Alterne para o modo escuro para maior conforto visual, especialmente durante suas viagens noturnas.
-
-Baixe o Rota Certa agora e assuma o controle da sua vida financeira e profissional! Sua rota para o sucesso é certa!"
-                             data-screenshots="https://placehold.co/400x800/112240/ccd6f6?text=Tela+1,https://placehold.co/400x800/112240/ccd6f6?text=Tela+2"
-                             data-link="https://play.google.com/store/apps/details?id=costha.studio.softwares.entregastyle">
-                            <div class="flex items-center mb-4">
-                                <img src="https://placehold.co/128x128/0a192f/8BC34A?text=RC" alt="Ícone App Rota Certa!" class="w-16 h-16 rounded-lg mr-4">
-                                <h4 class="text-xl font-bold text-white">Rota Certa!</h4>
-                            </div>
-                            <p class="text-slate-400 flex-grow">Planejador de rotas otimizadas para entregas.</p>
+                <h3 class="text-2xl font-bold mb-8 flex items-center gap-3 text-slate-300 reveal"><i data-lucide="smartphone" class="accent-color"></i>Apps na Play Store</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Projeto Rota Certa! -->
+                    <div class="project-card reveal" data-title="Rota Certa!" data-icon="logo_rota_certa.png" data-link="https://play.google.com/store/apps/details?id=costha.studio.softwares.entregastyle" data-screenshots="https://placehold.co/400x800/112240/ccd6f6?text=Tela+1,https://placehold.co/400x800/112240/ccd6f6?text=Tela+2" data-description="Bem-vindo ao Rota Certa, o aplicativo essencial para todo profissional autônomo que atua com entregas e transporte por plataformas digitais. Cansado de não saber para onde seu dinheiro vai? Quer maximizar seus lucros e ter um controle financeiro de verdade? Sua rota para o sucesso começa aqui!<br><br>⭐ O que o Rota Certa oferece para VOCÊ:<br><br>📊 <b>Controle Financeiro Completo e em Tempo Real:</b><br>Registro Simplificado, Resumo Mensal Claro, Saldos Inteligentes e Sugestão de Alocação de Ganhos Diários.<br><br>💡 <b>Guia para Iniciantes e Dicas de Otimização:</b><br>Acesso a guias, dicas de otimização, segurança e estratégias para maximizar ganhos.<br><br>🔧 <b>Gerenciamento de Veículos e Revisões:</b><br>Registre o histórico de revisões e receba lembretes para manutenção preventiva.<br><br>🤝 <b>Comunidade e Apoio:</b><br>Conecte-se com outros profissionais da área para trocar experiências.<br><br>✨ <b>Design Moderno e Personalizável:</b><br>Interface intuitiva com modo escuro para maior conforto visual.">
+                        <div class="flex items-center gap-4 mb-4 z-10">
+                            <img src="logo_rota_certa.png" alt="Ícone App Rota Certa!" class="w-16 h-16 rounded-xl shadow-lg">
+                            <h4 class="text-xl font-bold text-white">Rota Certa!</h4>
                         </div>
-
-                        <!-- Projeto LembreFlix -->
-                        <div class="project-card glass-effect rounded-lg p-6 flex flex-col hover:transform hover:-translate-y-2 transition-transform duration-300 cursor-pointer"
-                             data-title="LembreFlix"
-                             data-icon="https://placehold.co/128x128/0a192f/00a9e0?text=LF"
-                             data-description="Nunca mais esqueça aquele filme ou série que você queria assistir! O Lembreflix é o seu organizador pessoal para guardar tudo o que você tem vontade de ver.
-
-📌 Recursos principais:
-• Categorias personalizadas por gênero
-• Marque se já assistiu ou não
-• Lista organizada por nome e ano
-• Pesquisa direta no Google com um toque
-• Backup automático (na próxima atualização).
-
-Ideal para quem ama filmes, séries, documentários ou animações e quer manter tudo sob controle de forma rápida, prática e intuitiva.
-
-Baixe agora e comece a organizar sua lista de desejos do cinema e streaming!"
-                             data-screenshots=""
-                             data-link="https://play.google.com/store/apps/details?id=costha.studio.softwares.lembreflix">
-                            <div class="flex items-center mb-4">
-                                <img src="https://placehold.co/128x128/0a192f/00a9e0?text=LF" alt="Ícone App LembreFlix" class="w-16 h-16 rounded-lg mr-4">
-                                <h4 class="text-xl font-bold text-white">LembreFlix</h4>
-                            </div>
-                            <p class="text-slate-400 flex-grow">Nunca mais perca o lançamento de suas séries e filmes favoritos.</p>
-                        </div>
-
-                        <!-- Projeto Agenda do Criador -->
-                        <div class="project-card glass-effect rounded-lg p-6 flex flex-col hover:transform hover:-translate-y-2 transition-transform duration-300 cursor-pointer"
-                             data-title="Agenda do Criador"
-                             data-icon="https://placehold.co/128x128/0a192f/8BC34A?text=AC"
-                             data-description="O Agenda do Criador é um aplicativo desenvolvido especialmente para criadores de conteúdo que desejam mais organização, produtividade e controle sobre sua rotina de publicações. Com uma interface intuitiva e recursos pensados para facilitar o dia a dia, você poderá planejar, acompanhar e evoluir com mais foco e eficiência.
-
-📅 Agendamento Inteligente
-Crie e organize compromissos, ideias e conteúdos futuros com facilidade. A agenda semanal permite visualizar todas as atividades programadas de forma prática.
-
-📈 Acompanhamento de Crescimento
-Monitore sua evolução com gráficos e estatísticas mensais. Visualize o crescimento dos seus perfis e tenha uma noção clara do desempenho ao longo do tempo.
-
-💰 Controle de Faturamento
-Registre ganhos e tenha uma visão geral da sua receita, ajudando na gestão financeira do seu trabalho como criador.
-
-👤 Gerenciamento de Perfis
-Cadastre diversos perfis ou canais e acompanhe o desempenho de cada um individualmente.
-
-☁️ Backup Seguro
-Salve seus dados diretamente na nuvem, com suporte para backup e restauração via conta do Google. Sua agenda estará sempre protegida.
-
-🌙 Modo Claro e Escuro Automático
-Personalize a aparência do aplicativo conforme sua preferência ou com base no tema do sistema.
-
-O Agenda do Criador é a solução ideal para quem deseja levar a produção de conteúdo a um novo nível, com mais organização, profissionalismo e clareza."
-                             data-screenshots=""
-                             data-link="https://play.google.com/store/apps/details?id=costha.studio.softwares.agendadocriador">
-                            <div class="flex items-center mb-4">
-                                <img src="https://placehold.co/128x128/0a192f/8BC34A?text=AC" alt="Ícone App Agenda do Criador" class="w-16 h-16 rounded-lg mr-4">
-                                <h4 class="text-xl font-bold text-white">Agenda do Criador</h4>
-                            </div>
-                            <p class="text-slate-400 flex-grow">Ferramenta para criadores de conteúdo organizarem suas pautas.</p>
-                        </div>
-
-                        <!-- Projeto Alysson Motos -->
-                        <div class="project-card glass-effect rounded-lg p-6 flex flex-col hover:transform hover:-translate-y-2 transition-transform duration-300 cursor-pointer"
-                             data-title="Alysson Motos"
-                             data-icon="https://placehold.co/128x128/0a192f/ccd6f6?text=AM"
-                             data-description="Aplicativo oficial do Canal no Youtube Alysson Costha Motos."
-                             data-screenshots="https://placehold.co/400x800/112240/ccd6f6?text=Agendamento,https://placehold.co/400x800/112240/ccd6f6?text=Status,https://placehold.co/400x800/112240/ccd6f6?text=Notificações"
-                             data-link="https://play.google.com/store/apps/details?id=costha.studio.softwares.alyssonmoto">
-                            <div class="flex items-center mb-4">
-                                <img src="https://placehold.co/128x128/0a192f/ccd6f6?text=AM" alt="Ícone App Alysson Motos" class="w-16 h-16 rounded-lg mr-4">
-                                <h4 class="text-xl font-bold text-white">Alysson Motos</h4>
-                            </div>
-                            <p class="text-slate-400 flex-grow">Aplicativo para agendamento e acompanhamento de serviços de oficina.</p>
-                        </div>
-
-                        <!-- Projeto O Amigão da Vizinhança -->
-                        <div class="project-card glass-effect rounded-lg p-6 flex flex-col hover:transform hover:-translate-y-2 transition-transform duration-300 cursor-pointer"
-                             data-title="O Amigão da Vizinhança"
-                             data-icon="https://placehold.co/128x128/0a192f/00a9e0?text=AV"
-                             data-description="Uma rede social focada no seu bairro. Conecte-se com vizinhos, crie eventos locais, compartilhe informações importantes e fortaleça os laços da sua comunidade de forma segura e amigável."
-                             data-screenshots=""
-                             data-link="">
-                            <div class="flex items-center mb-4">
-                                <img src="https://placehold.co/128x128/0a192f/00a9e0?text=AV" alt="Ícone App O Amigão da Vizinhança" class="w-16 h-16 rounded-lg mr-4">
-                                <h4 class="text-xl font-bold text-white">O Amigão da Vizinhança</h4>
-                            </div>
-                            <p class="text-slate-400 flex-grow">Rede social para conectar vizinhos e fortalecer a comunidade local.</p>
-                        </div>
-
-                        <!-- Projeto Ferramentas do Enem -->
-                        <div class="project-card glass-effect rounded-lg p-6 flex flex-col hover:transform hover:-translate-y-2 transition-transform duration-300 cursor-pointer"
-                             data-title="Ferramentas do Enem"
-                             data-icon="https://placehold.co/128x128/0a192f/8BC34A?text=FE"
-                             data-description="Seu kit de sobrevivência para o ENEM. Inclui simulador de nota SISU, cronômetro de estudo com método Pomodoro, banco de questões e dicas diárias para te ajudar a conquistar a vaga dos sonhos."
-                             data-screenshots=""
-                             data-link="">
-                            <div class="flex items-center mb-4">
-                                <img src="https://placehold.co/128x128/0a192f/8BC34A?text=FE" alt="Ícone App Ferramentas do Enem" class="w-16 h-16 rounded-lg mr-4">
-                                <h4 class="text-xl font-bold text-white">Ferramentas do Enem</h4>
-                            </div>
-                            <p class="text-slate-400 flex-grow">Kit de ferramentas para ajudar estudantes a se prepararem para o exame.</p>
-                        </div>
+                        <p class="text-slate-400 flex-grow mb-4 z-10 line-clamp-3">Aplicativo essencial para o profissional autônomo que atua com entregas e transporte, com controle financeiro completo, guias e gerenciamento de veículo.</p>
+                        <div class="mt-auto text-right text-accent font-semibold z-10">Ver Detalhes &rarr;</div>
                     </div>
-                </div>
-
-                <!-- Categoria 2: Apps Android (Distribuição Direta) -->
-                <div class="mb-16">
-                    <h3 class="text-2xl font-bold mb-8 flex items-center gap-3"><i data-lucide="package" class="accent-color"></i>Apps Android (Distribuição Direta)</h3>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <!-- Projeto Zóide -->
-                        <div class="project-card glass-effect rounded-lg p-6 flex flex-col hover:transform hover:-translate-y-2 transition-transform duration-300 cursor-pointer"
-                             data-title="Zóide"
-                             data-icon="https://placehold.co/128x128/0a192f/ccd6f6?text=Z"
-                             data-description="Um aplicativo inovador para gerenciamento de tarefas gamificado, transformando sua produtividade em uma aventura. Cumpra metas, ganhe pontos e evolua seu 'Zóide'!"
-                             data-screenshots=""
-                             data-link="">
-                            <div class="flex items-center mb-4">
-                                <img src="https://placehold.co/128x128/0a192f/ccd6f6?text=Z" alt="Ícone App Zóide" class="w-16 h-16 rounded-lg mr-4">
-                                <h4 class="text-xl font-bold text-white">Zóide</h4>
-                            </div>
-                            <p class="text-slate-400 flex-grow">Gerenciador de tarefas gamificado para aumentar sua produtividade.</p>
+                    
+                    <!-- Projeto LembreFlix -->
+                    <div class="project-card reveal" data-title="Lembreflix: Agenda de filmes" data-icon="logo_lembreflix.png" data-link="https://play.google.com/store/apps/details?id=costha.studio.softwares.lembreflix" data-screenshots="" data-description="Nunca mais esqueça aquele filme ou série que você queria assistir! O Lembreflix é o seu organizador pessoal para guardar tudo o que você tem vontade de ver.<br><br>📌 <b>Recursos principais:</b><br>• Categorias personalizadas por gênero<br>• Marque se já assistiu ou não<br>• Lista organizada por nome e ano<br>• Pesquisa direta no Google com um toque<br>• Backup automático (na próxima atualização).<br><br>Ideal para quem ama filmes, séries, documentários ou animações e quer manter tudo sob controle de forma rápida, prática e intuitiva.">
+                        <div class="flex items-center gap-4 mb-4 z-10">
+                            <img src="logo_lembreflix.png" alt="Ícone App LembreFlix" class="w-16 h-16 rounded-xl shadow-lg">
+                            <h4 class="text-xl font-bold text-white">Lembreflix</h4>
                         </div>
-
-                        <!-- Projeto OuviZap -->
-                        <div class="project-card glass-effect rounded-lg p-6 flex flex-col hover:transform hover:-translate-y-2 transition-transform duration-300 cursor-pointer"
-                             data-title="OuviZap"
-                             data-icon="https://placehold.co/128x128/0a192f/8BC34A?text=OZ"
-                             data-description="Ouça seus áudios do WhatsApp de forma privada e anônima, sem que o remetente saiba. Perfeito para momentos em que a discrição é essencial."
-                             data-screenshots=""
-                             data-link="">
-                            <div class="flex items-center mb-4">
-                                <img src="https://placehold.co/128x128/0a192f/8BC34A?text=OZ" alt="Ícone App OuviZap" class="w-16 h-16 rounded-lg mr-4">
-                                <h4 class="text-xl font-bold text-white">OuviZap</h4>
-                            </div>
-                            <p class="text-slate-400 flex-grow">Ouça áudios do WhatsApp anonimamente, sem o check azul.</p>
-                        </div>
+                        <p class="text-slate-400 flex-grow mb-4 z-10 line-clamp-3">Seu organizador pessoal para filmes e séries. Crie listas, marque o que já assistiu e nunca mais perca um título que deseja ver.</p>
+                        <div class="mt-auto text-right text-accent font-semibold z-10">Ver Detalhes &rarr;</div>
                     </div>
-                </div>
 
-                <!-- Categoria 3: Web Apps (PWA) -->
-                <div>
-                    <h3 class="text-2xl font-bold mb-8 flex items-center gap-3"><i data-lucide="globe-2" class="accent-color"></i>Web Apps (PWA)</h3>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <!-- Projeto Bronzify -->
-                        <div class="project-card glass-effect rounded-lg p-6 flex flex-col hover:transform hover:-translate-y-2 transition-transform duration-300 cursor-pointer"
-                             data-title="Bronzify"
-                             data-icon="https://placehold.co/128x128/0a192f/00a9e0?text=B"
-                             data-description="Gerencie sua agenda de bronzeamento artificial, controle os horários das clientes e otimize seu tempo. A ferramenta ideal para profissionais da beleza."
-                             data-screenshots=""
-                             data-link="">
-                            <div class="flex items-center mb-4">
-                                <img src="https://placehold.co/128x128/0a192f/00a9e0?text=B" alt="Ícone App Bronzify" class="w-16 h-16 rounded-lg mr-4">
-                                <h4 class="text-xl font-bold text-white">Bronzify</h4>
-                            </div>
-                            <p class="text-slate-400 flex-grow">Sistema de agendamento para estúdios de bronzeamento.</p>
+                    <!-- Projeto Agenda do Criador -->
+                    <div class="project-card reveal" data-title="Agenda do Criador" data-icon="logo_agenda_criador.png" data-link="https://play.google.com/store/apps/details?id=costha.studio.softwares.agendadocriador" data-screenshots="" data-description="O Agenda do Criador é um aplicativo desenvolvido especialmente para criadores de conteúdo que desejam mais organização, produtividade e controle sobre sua rotina de publicações.<br><br>📅 <b>Agendamento Inteligente:</b> Crie e organize compromissos e ideias futuras com facilidade.<br><br>📈 <b>Acompanhamento de Crescimento:</b> Monitore sua evolução com gráficos e estatísticas mensais.<br><br>💰 <b>Controle de Faturamento:</b> Registre ganhos e tenha uma visão geral da sua receita.<br><br>👤 <b>Gerenciamento de Perfis:</b> Cadastre diversos perfis e acompanhe o desempenho individualmente.<br><br>☁️ <b>Backup Seguro:</b> Salve seus dados diretamente na nuvem, com suporte para backup via conta do Google.">
+                        <div class="flex items-center gap-4 mb-4 z-10">
+                            <img src="logo_agenda_criador.png" alt="Ícone App Agenda do Criador" class="w-16 h-16 rounded-xl shadow-lg">
+                            <h4 class="text-xl font-bold text-white">Agenda do Criador</h4>
                         </div>
+                        <p class="text-slate-400 flex-grow mb-4 z-10 line-clamp-3">Ferramenta completa para criadores de conteúdo planejarem publicações, acompanharem crescimento e gerenciarem faturamento com backup na nuvem.</p>
+                        <div class="mt-auto text-right text-accent font-semibold z-10">Ver Detalhes &rarr;</div>
+                    </div>
 
-                        <!-- Projeto Stolinx -->
-                        <div class="project-card glass-effect rounded-lg p-6 flex flex-col hover:transform hover:-translate-y-2 transition-transform duration-300 cursor-pointer"
-                             data-title="Stolinx"
-                             data-icon="https://placehold.co/128x128/0a192f/ccd6f6?text=SL"
-                             data-description="Crie sua página de links personalizada para redes sociais. Agregue todos os seus perfis, sites e contatos em um único lugar, de forma elegante e profissional."
-                             data-screenshots=""
-                             data-link="">
-                            <div class="flex items-center mb-4">
-                                <img src="https://placehold.co/128x128/0a192f/ccd6f6?text=SL" alt="Ícone App Stolinx" class="w-16 h-16 rounded-lg mr-4">
-                                <h4 class="text-xl font-bold text-white">Stolinx</h4>
-                            </div>
-                            <p class="text-slate-400 flex-grow">Agregador de links para sua bio em redes sociais.</p>
+                    <!-- Projeto Alysson Motos -->
+                    <div class="project-card reveal" data-title="Alysson Motos" data-icon="logo_alysson_motos.png" data-link="https://play.google.com/store/apps/details?id=costha.studio.softwares.alyssonmoto" data-screenshots="https://placehold.co/400x800/112240/ccd6f6?text=Agendamento,https://placehold.co/400x800/112240/ccd6f6?text=Status,https://placehold.co/400x800/112240/ccd6f6?text=Notificações" data-description="Aplicativo oficial do Canal no Youtube Alysson Costha Motos. Tenha acesso a conteúdos exclusivos, vídeos, dicas de manutenção e muito mais, tudo na palma da sua mão.">
+                         <div class="flex items-center gap-4 mb-4 z-10">
+                            <img src="logo_alysson_motos.png" alt="Ícone App Alysson Motos" class="w-16 h-16 rounded-xl shadow-lg">
+                            <h4 class="text-xl font-bold text-white">Alysson Motos</h4>
                         </div>
-
-                        <!-- Projeto Motix -->
-                        <div class="project-card glass-effect rounded-lg p-6 flex flex-col hover:transform hover:-translate-y-2 transition-transform duration-300 cursor-pointer"
-                             data-title="Motix"
-                             data-icon="https://placehold.co/128x128/0a192f/8BC34A?text=M"
-                             data-description="Plataforma PWA para gestão de frotas de motoboys. Acompanhe entregas em tempo real, otimize rotas e melhore a comunicação com sua equipe."
-                             data-screenshots=""
-                             data-link="">
-                            <div class="flex items-center mb-4">
-                                <img src="https://placehold.co/128x128/0a192f/8BC34A?text=M" alt="Ícone App Motix" class="w-16 h-16 rounded-lg mr-4">
-                                <h4 class="text-xl font-bold text-white">Motix</h4>
-                            </div>
-                            <p class="text-slate-400 flex-grow">Gestão e rastreamento de frotas de motoboys.</p>
-                        </div>
+                        <p class="text-slate-400 flex-grow mb-4 z-10 line-clamp-3">O aplicativo oficial do canal Alysson Costha Motos, com conteúdo exclusivo, vídeos e dicas de manutenção para apaixonados por motocicletas.</p>
+                        <div class="mt-auto text-right text-accent font-semibold z-10">Ver Detalhes &rarr;</div>
                     </div>
                 </div>
             </div>
@@ -399,21 +215,21 @@ O Agenda do Criador é a solução ideal para quem deseja levar a produção de 
         <!-- Contato Section -->
         <section id="contato" class="py-20 md:py-32">
             <div class="container mx-auto px-6 text-center">
-                <h2 class="section-title">Entre em Contato</h2>
-                <p class="max-w-3xl mx-auto text-lg mb-12 text-slate-300">
+                <h2 class="section-title reveal">Entre em Contato</h2>
+                <p class="max-w-3xl mx-auto text-lg mb-12 text-slate-300 reveal">
                     Tem uma ideia incrível ou precisa de uma solução digital para o seu negócio? Adoraríamos ouvir sobre ela. Vamos construir algo grandioso juntos.
                 </p>
-                <div class="flex flex-col md:flex-row justify-center items-center gap-8 text-lg">
-                    <a href="mailto:costha.studio_softwares@outlook.com" class="flex items-center gap-3 hover:accent-color transition-colors duration-300">
+                <div class="flex flex-col md:flex-row justify-center items-center gap-8 text-lg reveal">
+                    <a href="mailto:costha.studio_softwares@outlook.com" class="flex items-center gap-3 hover:text-accent transition-colors duration-300">
                         <i data-lucide="mail"></i>
                         <span>costha.studio_softwares@outlook.com</span>
                     </a>
-                    <a href="https://www.instagram.com/costha_studio_softwares?igsh=MWx2ZW04aWs1eHUwbA==" target="_blank" class="flex items-center gap-3 hover:accent-color transition-colors duration-300">
+                    <a href="https://www.instagram.com/costha_studio_softwares?igsh=MWx2ZW04aWs1eHUwbA==" target="_blank" class="flex items-center gap-3 hover:text-accent transition-colors duration-300">
                         <i data-lucide="instagram"></i>
                         <span>@costha_studio_softwares</span>
                     </a>
                 </div>
-                 <div class="mt-12">
+                 <div class="mt-12 reveal">
                     <a href="https://wa.me/5579996365824" target="_blank" class="btn-primary text-xl">
                         Envie sua Ideia
                     </a>
@@ -431,30 +247,39 @@ O Agenda do Criador é a solução ideal para quem deseja levar a produção de 
     <footer class="bg-[#081428] py-8">
         <div class="container mx-auto px-6 text-center text-slate-400">
             <p>&copy; 2024 Costha Studio de Softwares. Todos os direitos reservados.</p>
-            <p class="text-sm mt-2">Desenvolvido com <span class="accent-color">&hearts;</span> pela Costha Studio.</p>
+            <p class="text-sm mt-2">Desenvolvido com <span class="text-red-500">&hearts;</span> pela Costha Studio.</p>
         </div>
     </footer>
 
     <!-- Modal Structure -->
     <div id="project-modal" class="modal-overlay opacity-0">
         <div class="modal-container">
-            <div class="flex justify-between items-center mb-6">
-                <div class="flex items-center">
-                    <img id="modal-icon" src="" alt="Ícone do App" class="w-16 h-16 rounded-lg mr-4">
-                    <h3 id="modal-title" class="text-3xl font-bold text-white"></h3>
+            <div class="p-6 md:p-8 flex justify-between items-start border-b border-slate-800">
+                <div class="flex items-center gap-5">
+                    <img id="modal-icon" src="" alt="Ícone do App" class="w-20 h-20 rounded-2xl shadow-lg flex-shrink-0">
+                    <div>
+                        <h3 id="modal-title" class="text-3xl font-bold text-white"></h3>
+                    </div>
                 </div>
-                <button id="modal-close-btn" class="text-slate-400 hover:text-white">
+                <button id="modal-close-btn" class="text-slate-500 hover:text-white transition-colors">
                     <i data-lucide="x" class="w-8 h-8"></i>
                 </button>
             </div>
-            <div class="text-slate-300">
-                <p id="modal-description" class="mb-6 text-lg"></p>
-                <div class="mb-6">
-                    <a id="modal-link" href="#" target="_blank" class="btn-primary hidden">Visitar Projeto</a>
-                </div>
-                <h4 class="text-xl font-semibold text-white mb-4">Capturas de Tela</h4>
-                <div id="modal-screenshots" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <!-- Screenshots will be inserted here by JavaScript -->
+            <div class="flex-grow overflow-y-auto">
+                <div class="p-6 md:p-8 grid md:grid-cols-2 gap-8">
+                    <div class="text-slate-300">
+                        <p id="modal-description" class="mb-8 text-base leading-relaxed"></p>
+                        <a id="modal-link" href="#" target="_blank" class="w-full bg-accent text-[#0a192f] font-bold py-4 px-6 rounded-lg flex items-center justify-center gap-3 transition-transform duration-300 hover:scale-105">
+                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.345 3.012a.5.5 0 00-.547-.406L4.23 5.499a.5.5 0 00-.012.91l5.488 2.266L20.082 4.19a.5.5 0 00-.737-.178zM10.6 9.387l-5.5 2.271a.5.5 0 00.187.95l14.07-5.83a.5.5 0 00-.188-.95L10.6 9.387zM12 13a.5.5 0 00-.5.5v7a.5.5 0 001 0v-7a.5.5 0 00-.5-.5z"/></svg>
+                            <span>Baixar na Play Store</span>
+                        </a>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-semibold text-white mb-4">Capturas de Tela</h4>
+                        <div id="modal-screenshots" class="grid grid-cols-2 gap-4">
+                            <!-- Screenshots will be inserted here by JavaScript -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -511,7 +336,7 @@ O Agenda do Criador é a solução ideal para quem deseja levar a produção de 
 
                 modalTitle.textContent = title;
                 modalIcon.src = icon;
-                modalDescription.innerHTML = description.replace(/\n/g, '<br>'); // Support line breaks
+                modalDescription.innerHTML = description;
                 
                 if (link) {
                     modalLink.href = link;
@@ -520,7 +345,7 @@ O Agenda do Criador é a solução ideal para quem deseja levar a produção de 
                     modalLink.classList.add('hidden');
                 }
                 
-                modalScreenshots.innerHTML = ''; // Limpa screenshots anteriores
+                modalScreenshots.innerHTML = '';
                 if (screenshots.length > 0 && screenshots[0]) {
                     screenshots.forEach(src => {
                         const img = document.createElement('img');
@@ -530,19 +355,19 @@ O Agenda do Criador é a solução ideal para quem deseja levar a produção de 
                         modalScreenshots.appendChild(img);
                     });
                 } else {
-                    modalScreenshots.innerHTML = '<p class="text-slate-500 col-span-full">Nenhuma captura de tela disponível.</p>';
+                    modalScreenshots.innerHTML = '<p class="text-slate-500 col-span-full text-center">Nenhuma captura de tela disponível.</p>';
                 }
 
                 modal.classList.remove('opacity-0');
                 modal.classList.add('opacity-100');
-                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                document.body.style.overflow = 'hidden';
             });
         });
 
         function closeModal() {
             modal.classList.add('opacity-0');
             modal.classList.remove('opacity-100');
-            setTimeout(() => { // ensure fade-out animation completes
+            setTimeout(() => {
                  document.body.style.overflow = 'auto';
             }, 300);
         }
@@ -554,11 +379,25 @@ O Agenda do Criador é a solução ideal para quem deseja levar a produção de 
             }
         });
         
-        // Close modal with Escape key
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && !modal.classList.contains('opacity-0')) {
                 closeModal();
             }
+        });
+        
+        // Scroll Animation Logic
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
         });
 
     </script>
