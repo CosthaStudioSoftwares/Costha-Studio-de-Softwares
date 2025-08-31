@@ -19,33 +19,39 @@
     <style type="text/tailwindcss">
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0a192f; /* Azul marinho escuro */
-            color: #ccd6f6; /* Cor de texto clara */
+            background-color: #0a192f;
+            color: #ccd6f6;
+            overflow-x: hidden; /* Previne scroll horizontal */
+        }
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background-color: #0a192f;
+            background-image: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
         }
         .glass-effect {
-            background: rgba(10, 25, 47, 0.85);
+            background: rgba(17, 34, 64, 0.6);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .accent-color {
-            color: #8BC34A; /* Verde da logo */
-        }
-        .bg-accent {
-            background-color: #8BC34A;
-        }
-        .border-accent {
-            border-color: #8BC34A;
-        }
-        .secondary-color {
-            color: #00a9e0; /* Azul da logo */
-        }
+        .accent-color { color: #8BC34A; }
+        .bg-accent { background-color: #8BC34A; }
+        .border-accent { border-color: #8BC34A; }
+        .secondary-color { color: #00a9e0; }
+        
         .btn-primary {
-            @apply bg-transparent border-2 border-accent text-accent font-semibold py-3 px-6 rounded-lg transition-all duration-300 ease-in-out inline-block;
+            @apply bg-transparent border-2 border-accent text-accent font-semibold py-3 px-6 rounded-lg transition-all duration-300 ease-in-out inline-block relative overflow-hidden;
         }
         .btn-primary:hover {
-            @apply bg-accent bg-opacity-20;
+            @apply bg-accent bg-opacity-20 shadow-lg shadow-accent/20;
+            transform: translateY(-2px);
         }
+        
         .section-title {
             @apply text-3xl md:text-4xl font-bold mb-12 text-center relative;
         }
@@ -54,86 +60,94 @@
             @apply w-24 h-1 bg-accent absolute -bottom-4 left-1/2 -translate-x-1/2 rounded-full;
         }
         
-        /* NOVO ESTILO DOS PROJETOS */
-        .project-card {
-            @apply bg-[#112240] bg-opacity-70 border border-slate-800 rounded-xl p-6 flex flex-col transition-all duration-300 cursor-pointer overflow-hidden relative;
+        /* Efeito de digitação */
+        .typing-effect::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
         }
-        .project-card:before {
-            content: '';
-            @apply absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-r from-transparent to-accent/30 transition-transform duration-500 ease-in-out;
-            transform: rotate(45deg) translate(-100%, -100%);
-        }
-        .project-card:hover:before {
-            transform: rotate(45deg) translate(0, 0);
-        }
-        .project-card:hover {
-            @apply transform -translate-y-2 border-accent/50 shadow-2xl shadow-accent/10;
-        }
-        
-        /* Animação de Scroll */
-        .reveal {
-            @apply opacity-0 transform translate-y-8 transition-all duration-700 ease-out;
-        }
-        .reveal.visible {
-            @apply opacity-100 translate-y-0;
+        @keyframes blink {
+            from, to { opacity: 1 }
+            50% { opacity: 0 }
         }
 
-        /* Estilos do Modal */
+        /* Animações de Scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Estilo aprimorado para os cards de projeto */
+        .project-card {
+            @apply glass-effect rounded-lg p-6 flex flex-col transition-all duration-300 cursor-pointer border border-transparent;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .project-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(139, 195, 74, 0.5);
+            box-shadow: 0 0 20px rgba(139, 195, 74, 0.2);
+        }
+
+        /* Modal Aprimorado */
         .modal-overlay {
-            @apply fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 transition-opacity duration-300;
+            @apply fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 transition-opacity duration-300;
         }
         .modal-container {
-            @apply bg-[#0a192f] border border-slate-700 rounded-lg shadow-xl w-11/12 max-w-5xl max-h-[90vh] overflow-hidden flex flex-col;
-            transform: scale(0.95);
-            transition: all 0.3s ease-in-out;
+            @apply bg-[#112240] rounded-lg shadow-xl p-6 md:p-8 w-11/12 max-w-4xl max-h-[90vh] overflow-y-auto transform transition-all duration-300 scale-95;
         }
         .modal-overlay.opacity-0 {
             pointer-events: none;
         }
         .modal-overlay.opacity-100 .modal-container {
-            transform: scale(1);
+            @apply scale-100;
         }
     </style>
 </head>
 <body class="antialiased">
+    <!-- Fundo de Partículas -->
+    <div id="particles-js"></div>
 
     <!-- Header -->
-    <header id="header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 glass-effect">
+    <header id="header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300">
         <div class="container mx-auto px-6 py-2 flex justify-between items-center">
             <a href="#" class="flex-shrink-0">
-                <img src="https://placehold.co/200x60/0a192f/8BC34A?text=Costha+Studio&font=inter" alt="Logo Costha Studio de Softwares" class="h-12 md:h-14">
+                <img src="Logo_imagem.png" alt="Logo Costha Studio de Softwares" class="h-12 md:h-14 transition-transform duration-300 hover:scale-105">
             </a>
-            <nav class="hidden md:flex space-x-8 text-slate-300">
-                <a href="#sobre" class="hover:text-accent transition-colors duration-300">Sobre</a>
-                <a href="#projetos" class="hover:text-accent transition-colors duration-300">Projetos</a>
-                <a href="#contato" class="hover:text-accent transition-colors duration-300">Contato</a>
+            <nav class="hidden md:flex space-x-8 text-lg">
+                <a href="#sobre" class="hover:accent-color transition-colors duration-300">Sobre</a>
+                <a href="#projetos" class="hover:accent-color transition-colors duration-300">Projetos</a>
+                <a href="#contato" class="hover:accent-color transition-colors duration-300">Contato</a>
             </nav>
-            <button id="mobile-menu-button" class="md:hidden text-white">
-                <i data-lucide="menu"></i>
+            <button id="mobile-menu-button" class="md:hidden text-white p-2 rounded-md hover:bg-white/10">
+                <i data-lucide="menu" class="w-7 h-7"></i>
             </button>
         </div>
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-[#0a192f] border-t border-slate-800">
-            <a href="#sobre" class="block py-3 px-6 text-sm hover:bg-slate-800 hover:text-accent">Sobre</a>
-            <a href="#projetos" class="block py-3 px-6 text-sm hover:bg-slate-800 hover:text-accent">Projetos</a>
-            <a href="#contato" class="block py-3 px-6 text-sm hover:bg-slate-800 hover:text-accent">Contato</a>
+        <div id="mobile-menu" class="hidden md:hidden bg-[#112240]/90 backdrop-blur-sm">
+            <a href="#sobre" class="block py-3 px-6 text-base hover:bg-accent/20">Sobre</a>
+            <a href="#projetos" class="block py-3 px-6 text-base hover:bg-accent/20">Projetos</a>
+            <a href="#contato" class="block py-3 px-6 text-base hover:bg-accent/20">Contato</a>
         </div>
     </header>
 
     <main>
         <!-- Hero Section -->
-        <section id="hero" class="min-h-screen flex items-center bg-[#0a192f]">
-            <div class="container mx-auto px-6 text-center">
-                <div class="bg-black bg-opacity-30 p-10 rounded-xl">
-                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-4">
+        <section id="hero" class="min-h-screen flex items-center justify-center text-center">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto">
+                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-4 reveal">
                         Costha <span class="secondary-color">Studio</span> de Softwares
                     </h1>
-                    <p class="text-xl md:text-2xl accent-color font-semibold mb-8">
-                        Transformando sua ideia em realidade.
-                    </p>
-                    <a href="#contato" class="btn-primary text-lg">
-                        Vamos Conversar
-                    </a>
+                    <p id="typing-subtitle" class="text-xl md:text-2xl accent-color font-semibold mb-8 h-8 typing-effect reveal" style="transition-delay: 200ms;"></p>
+                    <div class="reveal" style="transition-delay: 400ms;">
+                        <a href="#contato" class="btn-primary text-lg">
+                            Vamos Conversar
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -142,15 +156,15 @@
         <section id="sobre" class="py-20 md:py-32">
             <div class="container mx-auto px-6">
                 <h2 class="section-title reveal">Sobre Nós</h2>
-                <div class="flex flex-col md:flex-row items-center gap-12 reveal">
-                    <div class="md:w-1/2">
-                        <img src="https://placehold.co/600x400/112240/ccd6f6?text=Inovação+Digital" alt="Equipe Costha Studio" class="rounded-lg shadow-2xl w-full">
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/2 reveal">
+                        <img src="inovacao.jpg" alt="Equipe Costha Studio" class="rounded-lg shadow-2xl w-full transition-transform duration-500 hover:scale-105">
                     </div>
-                    <div class="md:w-1/2 text-lg text-slate-300">
-                        <p class="mb-4">
+                    <div class="md:w-1/2 text-lg text-slate-300 space-y-4 reveal" style="transition-delay: 200ms;">
+                        <p>
                             Na <span class="text-white font-semibold">Costha Studio de Softwares</span>, somos apaixonados por tecnologia e inovação. Nossa missão é pegar sua visão e transformá-la em soluções digitais robustas, intuitivas e eficientes. 
                         </p>
-                        <p class="mb-4">
+                        <p>
                             Com expertise em desenvolvimento mobile, web e PWA, criamos produtos que não apenas atendem, mas superam as expectativas. Cada linha de código é escrita com precisão, e cada design é pensado para a melhor experiência do usuário.
                         </p>
                         <p>
@@ -162,53 +176,37 @@
         </section>
 
         <!-- Projetos Section -->
-        <section id="projetos" class="py-20 md:py-32 bg-[#0a192f] overflow-x-hidden">
+        <section id="projetos" class="py-20 md:py-32 bg-[#112240]">
             <div class="container mx-auto px-6">
                 <h2 class="section-title reveal">Nossos Projetos</h2>
                 
-                <h3 class="text-2xl font-bold mb-8 flex items-center gap-3 text-slate-300 reveal"><i data-lucide="smartphone" class="accent-color"></i>Apps na Play Store</h3>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    
-                    <!-- Projeto Rota Certa! -->
-                    <div class="project-card reveal" data-title="Rota Certa!" data-icon="logo_rota_certa.png" data-link="https://play.google.com/store/apps/details?id=costha.studio.softwares.entregastyle" data-screenshots="https://placehold.co/400x800/112240/ccd6f6?text=Tela+1,https://placehold.co/400x800/112240/ccd6f6?text=Tela+2" data-description="Bem-vindo ao Rota Certa, o aplicativo essencial para todo profissional autônomo que atua com entregas e transporte por plataformas digitais. Cansado de não saber para onde seu dinheiro vai? Quer maximizar seus lucros e ter um controle financeiro de verdade? Sua rota para o sucesso começa aqui!<br><br>⭐ O que o Rota Certa oferece para VOCÊ:<br><br>📊 <b>Controle Financeiro Completo e em Tempo Real:</b><br>Registro Simplificado, Resumo Mensal Claro, Saldos Inteligentes e Sugestão de Alocação de Ganhos Diários.<br><br>💡 <b>Guia para Iniciantes e Dicas de Otimização:</b><br>Acesso a guias, dicas de otimização, segurança e estratégias para maximizar ganhos.<br><br>🔧 <b>Gerenciamento de Veículos e Revisões:</b><br>Registre o histórico de revisões e receba lembretes para manutenção preventiva.<br><br>🤝 <b>Comunidade e Apoio:</b><br>Conecte-se com outros profissionais da área para trocar experiências.<br><br>✨ <b>Design Moderno e Personalizável:</b><br>Interface intuitiva com modo escuro para maior conforto visual.">
-                        <div class="flex items-center gap-4 mb-4 z-10">
-                            <img src="logo_rota_certa.png" alt="Ícone App Rota Certa!" class="w-16 h-16 rounded-xl shadow-lg">
-                            <h4 class="text-xl font-bold text-white">Rota Certa!</h4>
+                <!-- Categoria 1: Apps na Play Store -->
+                <div class="mb-16">
+                    <h3 class="text-2xl font-bold mb-8 flex items-center gap-3 reveal"><i data-lucide="smartphone" class="accent-color"></i>Apps na Play Store</h3>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        
+                        <!-- Cards de Projetos -->
+                        <!-- Projeto Rota Certa! -->
+                        <div class="project-card reveal" data-title="Rota Certa!" data-icon="logo_rota_certa.png" data-description="Bem-vindo ao Rota Certa, o aplicativo essencial para todo profissional autônomo que atua com entregas e transporte por plataformas digitais. Cansado de não saber para onde seu dinheiro vai? Quer maximizar seus lucros e ter um controle financeiro de verdade? Sua rota para o sucesso começa aqui!..." data-screenshots="rc_tela1.png,rc_tela2.png" data-link="https://play.google.com/store/apps/details?id=costha.studio.softwares.entregastyle">
+                            <div class="flex items-center mb-4"><img src="logo_rota_certa.png" alt="Ícone App Rota Certa!" class="w-16 h-16 rounded-lg mr-4"><h4 class="text-xl font-bold text-white">Rota Certa!</h4></div><p class="text-slate-400 flex-grow">Controle financeiro e otimização para entregadores.</p>
                         </div>
-                        <p class="text-slate-400 flex-grow mb-4 z-10 line-clamp-3">Aplicativo essencial para o profissional autônomo que atua com entregas e transporte, com controle financeiro completo, guias e gerenciamento de veículo.</p>
-                        <div class="mt-auto text-right text-accent font-semibold z-10">Ver Detalhes &rarr;</div>
-                    </div>
-                    
-                    <!-- Projeto LembreFlix -->
-                    <div class="project-card reveal" data-title="Lembreflix: Agenda de filmes" data-icon="logo_lembreflix.png" data-link="https://play.google.com/store/apps/details?id=costha.studio.softwares.lembreflix" data-screenshots="" data-description="Nunca mais esqueça aquele filme ou série que você queria assistir! O Lembreflix é o seu organizador pessoal para guardar tudo o que você tem vontade de ver.<br><br>📌 <b>Recursos principais:</b><br>• Categorias personalizadas por gênero<br>• Marque se já assistiu ou não<br>• Lista organizada por nome e ano<br>• Pesquisa direta no Google com um toque<br>• Backup automático (na próxima atualização).<br><br>Ideal para quem ama filmes, séries, documentários ou animações e quer manter tudo sob controle de forma rápida, prática e intuitiva.">
-                        <div class="flex items-center gap-4 mb-4 z-10">
-                            <img src="logo_lembreflix.png" alt="Ícone App LembreFlix" class="w-16 h-16 rounded-xl shadow-lg">
-                            <h4 class="text-xl font-bold text-white">Lembreflix</h4>
-                        </div>
-                        <p class="text-slate-400 flex-grow mb-4 z-10 line-clamp-3">Seu organizador pessoal para filmes e séries. Crie listas, marque o que já assistiu e nunca mais perca um título que deseja ver.</p>
-                        <div class="mt-auto text-right text-accent font-semibold z-10">Ver Detalhes &rarr;</div>
-                    </div>
 
-                    <!-- Projeto Agenda do Criador -->
-                    <div class="project-card reveal" data-title="Agenda do Criador" data-icon="logo_agenda_criador.png" data-link="https://play.google.com/store/apps/details?id=costha.studio.softwares.agendadocriador" data-screenshots="" data-description="O Agenda do Criador é um aplicativo desenvolvido especialmente para criadores de conteúdo que desejam mais organização, produtividade e controle sobre sua rotina de publicações.<br><br>📅 <b>Agendamento Inteligente:</b> Crie e organize compromissos e ideias futuras com facilidade.<br><br>📈 <b>Acompanhamento de Crescimento:</b> Monitore sua evolução com gráficos e estatísticas mensais.<br><br>💰 <b>Controle de Faturamento:</b> Registre ganhos e tenha uma visão geral da sua receita.<br><br>👤 <b>Gerenciamento de Perfis:</b> Cadastre diversos perfis e acompanhe o desempenho individualmente.<br><br>☁️ <b>Backup Seguro:</b> Salve seus dados diretamente na nuvem, com suporte para backup via conta do Google.">
-                        <div class="flex items-center gap-4 mb-4 z-10">
-                            <img src="logo_agenda_criador.png" alt="Ícone App Agenda do Criador" class="w-16 h-16 rounded-xl shadow-lg">
-                            <h4 class="text-xl font-bold text-white">Agenda do Criador</h4>
+                        <!-- Projeto LembreFlix -->
+                        <div class="project-card reveal" style="transition-delay: 100ms;" data-title="Lembreflix: Agenda de filmes" data-icon="logo_lembreflix.png" data-description="Nunca mais esqueça aquele filme ou série que você queria assistir! O Lembreflix é o seu organizador pessoal para guardar tudo o que você tem vontade de ver..." data-screenshots="" data-link="https://play.google.com/store/apps/details?id=costha.studio.softwares.lembreflix">
+                            <div class="flex items-center mb-4"><img src="logo_lembreflix.png" alt="Ícone App LembreFlix" class="w-16 h-16 rounded-lg mr-4"><h4 class="text-xl font-bold text-white">LembreFlix</h4></div><p class="text-slate-400 flex-grow">Nunca mais perca o lançamento de suas séries e filmes favoritos.</p>
                         </div>
-                        <p class="text-slate-400 flex-grow mb-4 z-10 line-clamp-3">Ferramenta completa para criadores de conteúdo planejarem publicações, acompanharem crescimento e gerenciarem faturamento com backup na nuvem.</p>
-                        <div class="mt-auto text-right text-accent font-semibold z-10">Ver Detalhes &rarr;</div>
-                    </div>
 
-                    <!-- Projeto Alysson Motos -->
-                    <div class="project-card reveal" data-title="Alysson Motos" data-icon="logo_alysson_motos.png" data-link="https://play.google.com/store/apps/details?id=costha.studio.softwares.alyssonmoto" data-screenshots="https://placehold.co/400x800/112240/ccd6f6?text=Agendamento,https://placehold.co/400x800/112240/ccd6f6?text=Status,https://placehold.co/400x800/112240/ccd6f6?text=Notificações" data-description="Aplicativo oficial do Canal no Youtube Alysson Costha Motos. Tenha acesso a conteúdos exclusivos, vídeos, dicas de manutenção e muito mais, tudo na palma da sua mão.">
-                         <div class="flex items-center gap-4 mb-4 z-10">
-                            <img src="logo_alysson_motos.png" alt="Ícone App Alysson Motos" class="w-16 h-16 rounded-xl shadow-lg">
-                            <h4 class="text-xl font-bold text-white">Alysson Motos</h4>
+                        <!-- Projeto Agenda do Criador -->
+                        <div class="project-card reveal" style="transition-delay: 200ms;" data-title="Agenda do Criador" data-icon="logo_agenda_criador.png" data-description="O Agenda do Criador é um aplicativo desenvolvido especialmente para criadores de conteúdo que desejam mais organização, produtividade e controle sobre sua rotina de publicações..." data-screenshots="" data-link="https://play.google.com/store/apps/details?id=costha.studio.softwares.agendadocriador">
+                            <div class="flex items-center mb-4"><img src="logo_agenda_criador.png" alt="Ícone App Agenda do Criador" class="w-16 h-16 rounded-lg mr-4"><h4 class="text-xl font-bold text-white">Agenda do Criador</h4></div><p class="text-slate-400 flex-grow">Ferramenta para criadores de conteúdo organizarem suas pautas.</p>
                         </div>
-                        <p class="text-slate-400 flex-grow mb-4 z-10 line-clamp-3">O aplicativo oficial do canal Alysson Costha Motos, com conteúdo exclusivo, vídeos e dicas de manutenção para apaixonados por motocicletas.</p>
-                        <div class="mt-auto text-right text-accent font-semibold z-10">Ver Detalhes &rarr;</div>
+                        
+                        <!-- Adicione outros cards aqui com a mesma estrutura -->
+
                     </div>
                 </div>
+
+                <!-- Outras Categorias de Projetos... -->
             </div>
         </section>
 
@@ -216,20 +214,20 @@
         <section id="contato" class="py-20 md:py-32">
             <div class="container mx-auto px-6 text-center">
                 <h2 class="section-title reveal">Entre em Contato</h2>
-                <p class="max-w-3xl mx-auto text-lg mb-12 text-slate-300 reveal">
+                <p class="max-w-3xl mx-auto text-lg mb-12 text-slate-300 reveal" style="transition-delay: 100ms;">
                     Tem uma ideia incrível ou precisa de uma solução digital para o seu negócio? Adoraríamos ouvir sobre ela. Vamos construir algo grandioso juntos.
                 </p>
-                <div class="flex flex-col md:flex-row justify-center items-center gap-8 text-lg reveal">
-                    <a href="mailto:costha.studio_softwares@outlook.com" class="flex items-center gap-3 hover:text-accent transition-colors duration-300">
+                <div class="flex flex-col md:flex-row justify-center items-center gap-8 text-lg reveal" style="transition-delay: 200ms;">
+                    <a href="mailto:costha.studio_softwares@outlook.com" class="flex items-center gap-3 hover:accent-color transition-all duration-300 transform hover:-translate-y-1">
                         <i data-lucide="mail"></i>
                         <span>costha.studio_softwares@outlook.com</span>
                     </a>
-                    <a href="https://www.instagram.com/costha_studio_softwares?igsh=MWx2ZW04aWs1eHUwbA==" target="_blank" class="flex items-center gap-3 hover:text-accent transition-colors duration-300">
+                    <a href="https://www.instagram.com/costha_studio_softwares?igsh=MWx2ZW04aWs1eHUwbA==" target="_blank" class="flex items-center gap-3 hover:accent-color transition-all duration-300 transform hover:-translate-y-1">
                         <i data-lucide="instagram"></i>
                         <span>@costha_studio_softwares</span>
                     </a>
                 </div>
-                 <div class="mt-12 reveal">
+                 <div class="mt-12 reveal" style="transition-delay: 300ms;">
                     <a href="https://wa.me/5579996365824" target="_blank" class="btn-primary text-xl">
                         Envie sua Ideia
                     </a>
@@ -239,7 +237,7 @@
     </main>
 
     <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/5579996365824" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-colors duration-300 z-40">
+    <a href="https://wa.me/5579996365824" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-all duration-300 z-40 transform hover:scale-110">
         <i data-lucide="message-circle" class="w-7 h-7"></i>
     </a>
 
@@ -247,48 +245,60 @@
     <footer class="bg-[#081428] py-8">
         <div class="container mx-auto px-6 text-center text-slate-400">
             <p>&copy; 2024 Costha Studio de Softwares. Todos os direitos reservados.</p>
-            <p class="text-sm mt-2">Desenvolvido com <span class="text-red-500">&hearts;</span> pela Costha Studio.</p>
+            <p class="text-sm mt-2">Desenvolvido com <span class="accent-color">&hearts;</span> pela Costha Studio.</p>
         </div>
     </footer>
 
     <!-- Modal Structure -->
     <div id="project-modal" class="modal-overlay opacity-0">
         <div class="modal-container">
-            <div class="p-6 md:p-8 flex justify-between items-start border-b border-slate-800">
-                <div class="flex items-center gap-5">
-                    <img id="modal-icon" src="" alt="Ícone do App" class="w-20 h-20 rounded-2xl shadow-lg flex-shrink-0">
-                    <div>
-                        <h3 id="modal-title" class="text-3xl font-bold text-white"></h3>
-                    </div>
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex items-center">
+                    <img id="modal-icon" src="" alt="Ícone do App" class="w-16 h-16 rounded-lg mr-4">
+                    <h3 id="modal-title" class="text-3xl font-bold text-white"></h3>
                 </div>
-                <button id="modal-close-btn" class="text-slate-500 hover:text-white transition-colors">
+                <button id="modal-close-btn" class="text-slate-400 hover:text-white transition-colors">
                     <i data-lucide="x" class="w-8 h-8"></i>
                 </button>
             </div>
-            <div class="flex-grow overflow-y-auto">
-                <div class="p-6 md:p-8 grid md:grid-cols-2 gap-8">
-                    <div class="text-slate-300">
-                        <p id="modal-description" class="mb-8 text-base leading-relaxed"></p>
-                        <a id="modal-link" href="#" target="_blank" class="w-full bg-accent text-[#0a192f] font-bold py-4 px-6 rounded-lg flex items-center justify-center gap-3 transition-transform duration-300 hover:scale-105">
-                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.345 3.012a.5.5 0 00-.547-.406L4.23 5.499a.5.5 0 00-.012.91l5.488 2.266L20.082 4.19a.5.5 0 00-.737-.178zM10.6 9.387l-5.5 2.271a.5.5 0 00.187.95l14.07-5.83a.5.5 0 00-.188-.95L10.6 9.387zM12 13a.5.5 0 00-.5.5v7a.5.5 0 001 0v-7a.5.5 0 00-.5-.5z"/></svg>
-                            <span>Baixar na Play Store</span>
-                        </a>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-semibold text-white mb-4">Capturas de Tela</h4>
-                        <div id="modal-screenshots" class="grid grid-cols-2 gap-4">
-                            <!-- Screenshots will be inserted here by JavaScript -->
-                        </div>
-                    </div>
+            <div class="text-slate-300">
+                <p id="modal-description" class="mb-6 text-lg whitespace-pre-line"></p>
+                <div class="mb-6">
+                    <a id="modal-link" href="#" target="_blank" class="btn-primary hidden">Visitar Projeto</a>
+                </div>
+                <h4 class="text-xl font-semibold text-white mb-4">Capturas de Tela</h4>
+                <div id="modal-screenshots" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Screenshots will be inserted here by JavaScript -->
                 </div>
             </div>
         </div>
     </div>
-
+    
+    <!-- Script para o fundo de partículas -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
     <script>
-        // Lucide Icons
+        // Inicializa Lucide Icons
         lucide.createIcons();
+
+        // Fundo de Partículas
+        particlesJS("particles-js", {
+          "particles": {
+            "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+            "color": { "value": "#8BC34A" },
+            "shape": { "type": "circle" },
+            "opacity": { "value": 0.5, "random": false, "anim": { "enable": false } },
+            "size": { "value": 3, "random": true, "anim": { "enable": false } },
+            "line_linked": { "enable": true, "distance": 150, "color": "#00a9e0", "opacity": 0.4, "width": 1 },
+            "move": { "enable": true, "speed": 4, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false, "attract": { "enable": false, "rotateX": 600, "rotateY": 1200 } }
+          },
+          "interactivity": {
+            "detect_on": "canvas",
+            "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
+            "modes": { "grab": { "distance": 400, "line_linked": { "opacity": 1 } }, "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 }, "repulse": { "distance": 100, "duration": 0.4 }, "push": { "particles_nb": 4 }, "remove": { "particles_nb": 2 } }
+          },
+          "retina_detect": true
+        });
 
         // Mobile Menu Toggle
         const mobileMenuButton = document.getElementById('mobile-menu-button');
@@ -296,26 +306,47 @@
         mobileMenuButton.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
-
         document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
         });
 
-        // Header Scroll
+        // Header Scroll Effect
         const header = document.getElementById('header');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
-                header.classList.add('py-1');
-                header.classList.remove('py-2');
+                header.classList.add('glass-effect');
             } else {
-                header.classList.remove('py-1');
-                header.classList.add('py-2');
+                header.classList.remove('glass-effect');
             }
         });
 
-        // Modal Logic
+        // Efeito de Digitação
+        const subtitleElement = document.getElementById('typing-subtitle');
+        const text = "Transformando sua ideia em realidade.";
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                subtitleElement.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+        setTimeout(typeWriter, 1000); // Inicia após 1 segundo
+
+        // Animação de Scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Lógica do Modal (Aprimorada)
         const modal = document.getElementById('project-modal');
         const modalCloseBtn = document.getElementById('modal-close-btn');
         const projectCards = document.querySelectorAll('.project-card');
@@ -331,12 +362,13 @@
                 const title = card.dataset.title;
                 const icon = card.dataset.icon;
                 const description = card.dataset.description;
-                const screenshots = card.dataset.screenshots.split(',').filter(s => s.trim() !== '');
+                const screenshots = card.dataset.screenshots ? card.dataset.screenshots.split(',').filter(s => s.trim() !== '') : [];
                 const link = card.dataset.link;
 
                 modalTitle.textContent = title;
                 modalIcon.src = icon;
-                modalDescription.innerHTML = description;
+                // Preserve as quebras de linha na descrição
+                modalDescription.innerText = description; 
                 
                 if (link) {
                     modalLink.href = link;
@@ -345,62 +377,42 @@
                     modalLink.classList.add('hidden');
                 }
                 
-                modalScreenshots.innerHTML = '';
+                modalScreenshots.innerHTML = ''; // Limpa screenshots anteriores
                 if (screenshots.length > 0 && screenshots[0]) {
                     screenshots.forEach(src => {
+                        const imgContainer = document.createElement('div');
+                        imgContainer.className = 'overflow-hidden rounded-lg shadow-md';
                         const img = document.createElement('img');
                         img.src = src;
                         img.alt = `Captura de tela de ${title}`;
-                        img.className = 'rounded-lg shadow-md w-full';
-                        modalScreenshots.appendChild(img);
+                        img.className = 'w-full transition-transform duration-300 hover:scale-110';
+                        imgContainer.appendChild(img);
+                        modalScreenshots.appendChild(imgContainer);
                     });
                 } else {
-                    modalScreenshots.innerHTML = '<p class="text-slate-500 col-span-full text-center">Nenhuma captura de tela disponível.</p>';
+                    modalScreenshots.innerHTML = '<p class="text-slate-500 col-span-full">Nenhuma captura de tela disponível.</p>';
                 }
 
                 modal.classList.remove('opacity-0');
                 modal.classList.add('opacity-100');
-                document.body.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden'; // Impede o scroll da página
             });
         });
 
         function closeModal() {
             modal.classList.add('opacity-0');
             modal.classList.remove('opacity-100');
-            setTimeout(() => {
-                 document.body.style.overflow = 'auto';
-            }, 300);
+            document.body.style.overflow = ''; // Restaura o scroll
         }
 
         modalCloseBtn.addEventListener('click', closeModal);
         modal.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                closeModal();
-            }
+            if (event.target === modal) closeModal();
         });
-        
         document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && !modal.classList.contains('opacity-0')) {
-                closeModal();
-            }
-        });
-        
-        // Scroll Animation Logic
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, {
-            threshold: 0.1
-        });
-
-        document.querySelectorAll('.reveal').forEach(el => {
-            observer.observe(el);
+            if (event.key === "Escape") closeModal();
         });
 
     </script>
 </body>
 </html>
-
